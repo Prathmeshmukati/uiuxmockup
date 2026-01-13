@@ -52,6 +52,9 @@ const hero = () => {
     setLoading(false);
 
     // Nacigate to  project Route
+     router.push('/project/' + projectId );
+
+
   };
 
   return (
