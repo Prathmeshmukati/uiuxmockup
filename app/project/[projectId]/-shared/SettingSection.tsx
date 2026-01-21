@@ -3,23 +3,38 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { THEME_NAME_LIST, THEMES } from "@/data/Themes";
-import { index } from "drizzle-orm/gel-core";
-import { Camera, Share2, Share2Icon, ShareIcon, Sparkle } from "lucide-react";
+import { ProjectType } from "@/type/types";
+// import { index } from "drizzle-orm/gel-core";
+import { Camera,  ShareIcon, Sparkle } from "lucide-react";
 import { Share } from "next/font/google";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function SettingSection() {
+
+type Props ={
+  projectDetail:ProjectType | undefined;
+};
+
+function SettingSection({projectDetail}:Props) {
+
   const [selectedTheme, setSelectedTheme] = useState("AURORA_INK");
-  const [ProjectName, setProjectName] = useState('');
+  const [ProjectName, setProjectName] = useState(projectDetail?.projectName);
   const [userNewScreenInput, setuserNewScreenInput] = useState <string>();
+
+  useEffect(()=>{
+     if (projectDetail) {
+      setProjectName(projectDetail?.projectName);
+    }
+  },[projectDetail])
 
   return (
     <div className="w-[300px]  h-[90vh] p-5 border-r">
       <h2 className="font-medium text-lg ">Setting</h2>
       <div className="mt-3">
         <h2 className="text-sm mb-1">Project Name </h2>
-        <Input placeholder="Project Name"
-        onChange={(event)=>setProjectName(event.target.value)}
+        <Input
+         placeholder="Project Name"
+         value={ProjectName ||""}
+         onChange={(event)=>setProjectName(event.target.value)}
         />
       </div>
       <div className="mt-3">

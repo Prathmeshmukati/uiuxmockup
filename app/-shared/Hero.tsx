@@ -37,17 +37,20 @@ const hero = () => {
       router.push("/sign-in");
       return;
     }
-    // create new project
+    // create new project // Step 2: Check input diya hai ya nahi
     if (!userInput) {
       return;
     }
     setLoading(true);
+    // Unique ID banao
     const projectId = crypto.randomUUID();
+    // API call
     const result = await axios.post("/api/project", {
       userInput: userInput,
       device: device,
       projectId: projectId,
     });
+    //  Loading stop
     console.log(result.data);
     setLoading(false);
 
