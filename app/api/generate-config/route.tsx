@@ -35,9 +35,33 @@ export async function POST(req:NextRequest){
 
 });
 const JSONAiResult = JSON.parse(aiResult?.choices[0]?.message?.content as string)
-console.log(aiResult)
+
+if(JSONAiResult){
+// update project table with project name 
+await db.update(ProjectTable).set({
+  projectVisualDescription:JSONAiResult?.projectVisualDescription,
+  projectName:JSONAiResult?.projectName,
+  theme:JSONAiResult?.theme
+
+}).where(eq(ProjectTable.projectId,projectId as string))
+
+// insert screen config
+JSONAiResult.screens?.forEach( async (screen:any)=>{
+  const result = await db.insert(ScreenConfigTable).values({
+    projectId:projectId,
+    purpose:screen?.purpose,
+    screenDescription:screen?.layoutDescription,
+    screenId:screen?.id,
+    screenName:screen?.name
+  });
+});
 
 return NextResponse.json(JSONAiResult)
+
+}
+else{
+  NextResponse.json({msg:"internal server error "})
+}
 
 }
 //  "nvidia/nemotron-3-nano-30b-a3b:free",
