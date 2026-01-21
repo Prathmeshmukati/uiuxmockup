@@ -37,7 +37,7 @@ export async function POST(req:NextRequest){
 const JSONAiResult = JSON.parse(aiResult?.choices[0]?.message?.content as string)
 
 if(JSONAiResult){
-// update project table with project name
+// update project table with project name 
 await db.update(ProjectTable).set({
   projectVisualDescription:JSONAiResult?.projectVisualDescription,
   projectName:JSONAiResult?.projectName,
